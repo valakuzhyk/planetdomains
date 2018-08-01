@@ -10,17 +10,10 @@ func main() {
 	if err != nil {
 		log.Fatal("Unable to create Game:", err)
 	}
-	log.Infof("%+v", p1)
-	p1.PlayHand(p2)
-	log.Infof("%+v", p1)
-	p2.PlayHand(p1)
-	log.Infof("%+v", p1)
-	p1.PlayHand(p2)
-	log.Infof("%+v", p1)
-	p2.PlayHand(p1)
-	log.Infof("%+v", p1)
-	p1.PlayHand(p2)
-	log.Infof("%+v", p1)
-	p2.PlayHand(p1)
-
+	for true {
+		log.Infof("%+v", p1)
+		p1.PlayHand(p2)
+		log.Infof("%+v", p1)
+		p2.PlayHand(p1)
+	}
 }

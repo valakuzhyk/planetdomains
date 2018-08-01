@@ -1,8 +1,7 @@
 package card
 
 import (
-	"fmt"
-
+	"github.com/fatih/color"
 	"github.com/valakuzhyk/planetdomains/internal"
 )
 
@@ -28,9 +27,19 @@ type Card interface {
 	PlayEffect(internal.Player)
 }
 
-// Print returns a string representing the card.
-func Print(c Card) string {
-	return fmt.Sprintf("%s", c.GetName())
+// String returns a string representing the card.
+func String(c Card) string {
+	switch c.GetFaction() {
+	case TRADE_FED:
+		return color.BlueString(c.GetName())
+	case BLOB:
+		return color.GreenString(c.GetName())
+	case MACHINE_CULT:
+		return color.RedString(c.GetName())
+	case STAR_EMPIRE:
+		return color.YellowString(c.GetName())
+	}
+	return c.GetName()
 }
 
 // Play plays a card

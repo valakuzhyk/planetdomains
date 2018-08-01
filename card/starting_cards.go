@@ -2,7 +2,6 @@ package card
 
 import "github.com/valakuzhyk/planetdomains/internal"
 
-// Scout
 type scout struct{}
 
 func (e scout) GetName() string              { return "Scout" }
@@ -10,7 +9,6 @@ func (e scout) GetCost() int                 { return 0 }
 func (e scout) GetFaction() Faction          { return UNALIGNED }
 func (e scout) PlayEffect(p internal.Player) { p.AddTrade(1) }
 
-// Viper
 type viper struct{}
 
 func (e viper) GetName() string              { return "Viper" }
@@ -30,8 +28,6 @@ func DefaultStarterDeck() Deck {
 	d.Shuffle()
 	return d
 }
-
-// Explorers
 
 type explorer struct{}
 

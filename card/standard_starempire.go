@@ -8,7 +8,7 @@ type commandCenter struct{}
 
 func (e commandCenter) GetName() string     { return "Command Center" }
 func (e commandCenter) GetCost() int        { return 4 }
-func (e commandCenter) GetFaction() Faction { return TRADE_FED }
+func (e commandCenter) GetFaction() Faction { return STAR_EMPIRE }
 func (e commandCenter) PlayEffect(p internal.Player) {
 	p.AddTrade(2) /* evaluate at end, 2 combat x # of star empire ships */
 }
@@ -16,9 +16,9 @@ func (e commandCenter) GetDefense() (int, bool) { return 4, true }
 
 type imperialPalace struct{}
 
-func (e imperialPalace) GetName() string     { return "Command Center" }
+func (e imperialPalace) GetName() string     { return "Imperial Palace" }
 func (e imperialPalace) GetCost() int        { return 7 }
-func (e imperialPalace) GetFaction() Faction { return TRADE_FED }
+func (e imperialPalace) GetFaction() Faction { return STAR_EMPIRE }
 func (e imperialPalace) PlayEffect(p internal.Player) {
 	p.DrawCards(1)
 	// Opponent discards card

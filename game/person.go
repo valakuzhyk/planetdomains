@@ -51,13 +51,15 @@ func newPerson(name string, startingAuthority int, startingDeck card.Deck, field
 func (p *person) String() string {
 	s := []string{
 		fmt.Sprintf("*********PRINTING PLAYER STATE ***************"),
-		fmt.Sprintf("%s, Authority: %d \n", p.Name, p.Authority)}
-
-	s = append(s, "Hand: ")
-	for _, c := range p.Hand {
-		s = append(s, "   "+card.Print(c))
-	}
+		fmt.Sprintf("%s, Authority: %d", p.Name, p.Authority)}
 	s = append(s, fmt.Sprintf("Deck len: %d, Discard len: %d", p.Deck.Len(), p.Discard.Len()))
+	s = append(s, "")
+	cards := []string{}
+	for _, c := range p.Hand {
+		cards = append(cards, card.String(c))
+	}
+
+	s = append(s, "Hand: "+strings.Join(cards, ", "))
 
 	return strings.Join(s, "\n")
 }

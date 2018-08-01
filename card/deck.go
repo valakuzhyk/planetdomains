@@ -12,6 +12,7 @@ type Deck interface {
 	Shuffle()
 	Len() int
 	IsEmpty() bool
+	Peek() Card
 	Draw() Card
 	DrawAll() []Card
 	PlaceOnTop(...Card)
@@ -34,6 +35,13 @@ func (d *deckImpl) Len() int {
 
 func (d *deckImpl) IsEmpty() bool {
 	return d.Len() == 0
+}
+
+func (d *deckImpl) Peek() Card {
+	if d.IsEmpty() {
+		panic("Can't peek with no cards left!")
+	}
+	return d.cards[0]
 }
 
 func (d *deckImpl) Draw() Card {
