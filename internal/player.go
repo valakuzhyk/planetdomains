@@ -8,4 +8,5 @@ type Player interface {
 	AddCombat(int) error
 	GetCombat() int
 	AddAuthority(int)
+	DrawCards(uint)
 }

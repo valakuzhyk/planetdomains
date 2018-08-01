@@ -38,14 +38,21 @@ func Play(c Card, p internal.Player) {
 	c.PlayEffect(p)
 }
 
-// TrashableCard has an additional affect that applies on trashing
-type TrashableCard interface {
+// ScrapableCard has an additional effect that applies on trashing
+type ScrapableCard interface {
 	Card
-	TrashEffect(internal.Player)
+	ScrapEffect(internal.Player)
 }
 
-// Trash trashes a card
-func Trash(c TrashableCard, p internal.Player) {
-	c.PlayEffect(p)
-	c.TrashEffect(p)
+// AllyableCard has an additional effect that applies when another card
+// of the same faction is played
+type AllyableCard interface {
+	Card
+	AllyEffect(internal.Player)
+}
+
+// Base cards exist until they are destroyed
+type Base interface {
+	Card
+	GetDefense() (strength int, isOutpost bool)
 }

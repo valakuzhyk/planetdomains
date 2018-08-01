@@ -3,7 +3,6 @@ package card
 import "github.com/valakuzhyk/planetdomains/internal"
 
 // Scout
-
 type scout struct{}
 
 func (e scout) GetName() string              { return "Scout" }

@@ -2,8 +2,6 @@ package game
 
 import (
 	log "github.com/sirupsen/logrus"
-
-	"github.com/valakuzhyk/planetdomains/card"
 )
 
 /* External Person interface */
@@ -14,15 +12,17 @@ func (p1 *person) PlayHand(p2 *person) {
 	p1.DiscardCards(p1.NumToDiscard)
 
 	// Apply all effects from cards
-	resolveCards(p1, p2, p1.Hand...)
-	// Loop on buying cards and applying effects if those cards come into play
-	purchaseCards(p1)
+	for len(p1.Hand) != 0 {
+		resolveCards(p1, p2)
+		// Loop on buying cards and applying effects if those cards come into play
+		purchaseCards(p1)
+	}
 
 	// Commit the effects after
 	commitTurnState(p1, p2)
 
+	p1.discardHandAndResolved()
 	p1.turnState = turnState{}
-	p1.discardHand()
 	p1.drawToHand(5)
 }
 
@@ -30,9 +30,13 @@ func purchaseCards(p1 *person) {
 	// If possible try and purchase some cards
 }
 
-func resolveCards(p1, p2 *person, cards ...card.Card) {
-	for _, c := range cards {
+func resolveCards(p1, p2 *person) {
+	for len(p1.Hand) != 0 {
+		c := p1.Hand[0]
+		p1.Hand = p1.Hand[1:]
+
 		c.PlayEffect(p1)
+		p1.ResolvedCards = append(p1.ResolvedCards, c)
 	}
 }
 

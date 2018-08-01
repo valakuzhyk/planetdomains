@@ -16,12 +16,14 @@ type person struct {
 	Authority int
 	Deck      card.Deck
 	Discard   card.Deck
+	Bases     []card.Card
 
 	Hand []card.Card
 	turnState
 }
 
 type turnState struct {
+	ResolvedCards       []card.Card
 	NumToDiscard        int
 	Trade               int
 	Combat              int
@@ -61,11 +63,15 @@ func (p *person) String() string {
 }
 
 // places the hand in the discard pile
-func (p *person) discardHand() {
+func (p *person) discardHandAndResolved() {
 	for _, card := range p.Hand {
 		p.Discard.PlaceOnTop(card)
 	}
+	for _, card := range p.ResolvedCards {
+		p.Discard.PlaceOnTop(card)
+	}
 	p.Hand = []card.Card{}
+	p.ResolvedCards = []card.Card{}
 }
 
 // draws cards from the deck to the hand
@@ -131,4 +137,8 @@ func (p *person) AddAuthority(authority int) {
 		log.Fatal("You have died.")
 	}
 	p.Authority += authority
+}
+
+func (p *person) DrawCards(n uint) {
+	p.drawToHand(n)
 }

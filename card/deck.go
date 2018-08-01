@@ -2,7 +2,6 @@ package card
 
 import (
 	"fmt"
-	"log"
 	"math/rand"
 	"strings"
 	"time"
@@ -39,7 +38,7 @@ func (d *deckImpl) IsEmpty() bool {
 
 func (d *deckImpl) Draw() Card {
 	if d.IsEmpty() {
-		log.Fatal("Don't draw when there aren't any cards left!")
+		panic("Don't draw when there aren't any cards left!")
 	}
 	card := d.cards[0]
 	d.cards = d.cards[1:]
