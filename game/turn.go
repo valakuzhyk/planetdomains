@@ -1,6 +1,9 @@
 package game
 
 import (
+	"fmt"
+
+	"github.com/buger/goterm"
 	log "github.com/sirupsen/logrus"
 	"github.com/valakuzhyk/planetdomains/card"
 )
@@ -9,7 +12,10 @@ import (
 // we will need some kind of registration system for the abilities (I think)
 
 func (p1 *person) PlayHand(p2 *person) {
-	log.Infof("******Printing Turn for %s********", p1.Name)
+	goterm.Clear()
+	goterm.Flush()
+	fmt.Println(p1)
+	fmt.Printf("******Printing Turn for %s********\n", p1.Name)
 
 	// Discard cards from your hand if needed
 	p1.DiscardCards(p1.ToDiscard)
@@ -53,10 +59,10 @@ func resolveCards(p1, p2 *person) {
 
 func commitTurnState(p1, p2 *person) {
 	// Waste whatever money wasn't spent
-	log.Printf("Wasted %d trade", p1.turnState.Trade)
-	log.Printf("Applied %d damage to opponent", p1.turnState.Combat)
+	fmt.Printf("Wasted %d trade\n", p1.turnState.Trade)
+	fmt.Printf("Applied %d damage to opponent\n", p1.turnState.Combat)
 	p2.AddAuthority(-p1.turnState.Combat)
-	log.Printf("Recovered %d authority", p1.turnState.AdditionalAuthority)
+	fmt.Printf("Recovered %d authority\n", p1.turnState.AdditionalAuthority)
 	p1.AddAuthority(p1.turnState.AdditionalAuthority)
 	return
 }

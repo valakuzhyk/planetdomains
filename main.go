@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+
 	log "github.com/sirupsen/logrus"
 	"github.com/valakuzhyk/planetdomains/game"
 )
@@ -11,9 +13,9 @@ func main() {
 		log.Fatal("Unable to create Game:", err)
 	}
 	for true {
-		log.Infof("%+v", p1)
+		fmt.Printf("%+v\n", p1)
 		p1.PlayHand(p2)
-		log.Infof("%+v", p1)
+		fmt.Printf("%+v\n", p1)
 		p2.PlayHand(p1)
 	}
 }

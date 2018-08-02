@@ -13,11 +13,11 @@ func purchaseCards(p *person) {
 	for true {
 		log.Debug(p.field)
 		printPurchaseOptions(p.field)
-		log.Printf("You have %d Trade, would you like to buy a card?", p.GetTrade())
+		fmt.Printf("You have %d Trade, would you like to buy a card?\n", p.GetTrade())
 		var i int
 		_, err := fmt.Scanf("%d", &i)
 		if err != nil {
-			log.Printf("Could not understand input. Try again")
+			fmt.Printf("Could not understand input. Try again\n")
 			continue
 		}
 		if i < 0 {
@@ -34,26 +34,26 @@ func purchaseCards(p *person) {
 }
 
 func printPurchaseOptions(field *Field) {
-	log.Printf("Cards for Purchase:")
+	fmt.Printf("Cards for Purchase:\n")
 	if field.Explorers.IsEmpty() {
-		log.Printf("   0: N/A XXXX")
+		fmt.Printf("   0: N/A XXXX\n")
 	} else {
-		log.Printf("   0: %s %d", field.Explorers.Peek().GetName(), field.Explorers.Peek().GetCost())
+		fmt.Printf("   0: %s %d\n", field.Explorers.Peek().GetName(), field.Explorers.Peek().GetCost())
 	}
 	for i, c := range field.TradeRow {
-		log.Printf("   %d: %s %d", i+1, card.String(c), c.GetCost())
+		fmt.Printf("   %d: %s %d\n", i+1, card.String(c), c.GetCost())
 	}
 }
 
 func buyExplorer(p *person) {
 	explorers := p.field.Explorers
 	if explorers.IsEmpty() {
-		log.Println("No more explorers!")
+		fmt.Println("No more explorers!\n")
 		return
 	}
 	eCost := explorers.Peek().GetCost()
 	if eCost > p.GetTrade() {
-		log.Printf("Cost %d greater than your trade %d. Insufficient Funds",
+		fmt.Printf("Cost %d greater than your trade %d. Insufficient Funds\n",
 			eCost,
 			p.GetTrade())
 		return
@@ -66,7 +66,7 @@ func buyExplorer(p *person) {
 func buyFromTradeRow(p *person, n int) {
 	tradeRow := p.field.TradeRow
 	if n > len(tradeRow) {
-		log.Println("Invalid choice")
+		fmt.Println("Invalid choice\n")
 		return
 	}
 
@@ -74,7 +74,7 @@ func buyFromTradeRow(p *person, n int) {
 	c := tradeRow[n-1]
 
 	if p.GetTrade() < c.GetCost() {
-		log.Printf("Cost %d greater than your trade %d. Insufficient Funds",
+		fmt.Printf("Cost %d greater than your trade %d. Insufficient Funds\n",
 			c.GetCost(),
 			p.GetTrade())
 		return

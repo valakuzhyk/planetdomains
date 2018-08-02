@@ -136,7 +136,7 @@ func (p *person) AddCombat(combat int) error {
 
 func (p *person) AddAuthority(authority int) {
 	if p.Authority+authority < 0 {
-		log.Printf("%s has died", p.Name)
+		fmt.Printf("%s has died\n", p.Name)
 		log.Fatal()
 	}
 	p.Authority += authority
