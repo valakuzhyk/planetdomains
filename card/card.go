@@ -42,6 +42,15 @@ func String(c Card) string {
 	return c.GetName()
 }
 
+// StringList returns a list of strings representing the cards given.
+func StringList(cards ...Card) []string {
+	cardlist := make([]string, len(cards))
+	for i, c := range cards {
+		cardlist[i] = String(c)
+	}
+	return cardlist
+}
+
 // Play plays a card
 func Play(c Card, p1, p2 internal.Player) {
 	c.PlayEffect(p1, p2)

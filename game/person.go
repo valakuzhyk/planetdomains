@@ -56,11 +56,13 @@ func (p *person) String() string {
 		fmt.Sprintf("%s, Authority: %d", p.Name, p.Authority)}
 	s = append(s, fmt.Sprintf("Deck len: %d, Discard len: %d", p.Deck.Len(), p.Discard.Len()))
 	s = append(s, "")
-	cards := []string{}
-	for _, c := range p.Hand {
-		cards = append(cards, card.String(c))
+
+	if len(p.Bases) > 0 {
+		cards := card.StringList(p.Bases...)
+		s = append(s, "Bases: "+strings.Join(cards, ", "))
 	}
 
+	cards := card.StringList(p.Hand...)
 	s = append(s, "Hand: "+strings.Join(cards, ", "))
 
 	return strings.Join(s, "\n")
@@ -134,7 +136,8 @@ func (p *person) AddCombat(combat int) error {
 
 func (p *person) AddAuthority(authority int) {
 	if p.Authority+authority < 0 {
-		log.Fatal("You have died.")
+		log.Printf("%s has died", p.Name)
+		log.Fatal()
 	}
 	p.Authority += authority
 }

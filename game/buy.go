@@ -10,12 +10,16 @@ import (
 func purchaseCards(p *person) {
 	// If possible try and purchase some cards
 	// 0 represents explorer
-	var i int
 	for true {
 		log.Debug(p.field)
 		printPurchaseOptions(p.field)
 		log.Printf("You have %d Trade, would you like to buy a card?", p.GetTrade())
-		fmt.Scanf("%d", &i)
+		var i int
+		_, err := fmt.Scanf("%d", &i)
+		if err != nil {
+			log.Printf("Could not understand input. Try again")
+			continue
+		}
 		if i < 0 {
 			break
 		}
