@@ -4,17 +4,17 @@ import "github.com/valakuzhyk/planetdomains/internal"
 
 type scout struct{}
 
-func (e scout) GetName() string              { return "Scout" }
-func (e scout) GetCost() int                 { return 0 }
-func (e scout) GetFaction() Faction          { return UNALIGNED }
-func (e scout) PlayEffect(p internal.Player) { p.AddTrade(1) }
+func (e scout) GetName() string                   { return "Scout" }
+func (e scout) GetCost() int                      { return 0 }
+func (e scout) GetFaction() Faction               { return UNALIGNED }
+func (e scout) PlayEffect(p1, p2 internal.Player) { p1.AddTrade(1) }
 
 type viper struct{}
 
-func (e viper) GetName() string              { return "Viper" }
-func (e viper) GetCost() int                 { return 0 }
-func (e viper) GetFaction() Faction          { return UNALIGNED }
-func (e viper) PlayEffect(p internal.Player) { p.AddCombat(1) }
+func (e viper) GetName() string                   { return "Viper" }
+func (e viper) GetCost() int                      { return 0 }
+func (e viper) GetFaction() Faction               { return UNALIGNED }
+func (e viper) PlayEffect(p1, p2 internal.Player) { p1.AddCombat(1) }
 
 // DefaultStarterDeck is what a player normally starts with at the beginning of the game
 func DefaultStarterDeck() Deck {
@@ -31,10 +31,10 @@ func DefaultStarterDeck() Deck {
 
 type explorer struct{}
 
-func (e explorer) GetName() string              { return "Explorer" }
-func (e explorer) GetCost() int                 { return 2 }
-func (e explorer) GetFaction() Faction          { return UNALIGNED }
-func (e explorer) PlayEffect(p internal.Player) { p.AddTrade(2) }
+func (e explorer) GetName() string                   { return "Explorer" }
+func (e explorer) GetCost() int                      { return 2 }
+func (e explorer) GetFaction() Faction               { return UNALIGNED }
+func (e explorer) PlayEffect(p1, p2 internal.Player) { p1.AddTrade(2) }
 
 // NewExplorerDeck returns a new deck containing 10 explorers
 func NewExplorerDeck() Deck {

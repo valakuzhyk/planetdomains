@@ -4,9 +4,14 @@ package internal
 // the game mechanics. This cannot have any operations on card.
 type Player interface {
 	AddTrade(int) error
-	GetTrade() int
 	AddCombat(int) error
-	GetCombat() int
 	AddAuthority(int)
 	DrawCards(uint)
+	DiscardCard()
+	DestroyBase()
+	ScrapFromHand()
+	ScrapFromDiscard()
+	ScrapFromHandOrDiscard(uint)
+	ScrapFromTradeRow(uint)
+	AcquireCardLessThan(uint)
 }

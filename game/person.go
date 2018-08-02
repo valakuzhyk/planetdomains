@@ -23,8 +23,10 @@ type person struct {
 }
 
 type turnState struct {
+	// Present at the beginning of the turn, must be resolved before doing anything else.
+	ToDiscard int
+
 	ResolvedCards       []card.Card
-	NumToDiscard        int
 	Trade               int
 	Combat              int
 	AdditionalAuthority int
@@ -130,10 +132,6 @@ func (p *person) AddCombat(combat int) error {
 	return nil
 }
 
-func (p *person) GetCombat() int {
-	return p.Combat
-}
-
 func (p *person) AddAuthority(authority int) {
 	if p.Authority+authority < 0 {
 		log.Fatal("You have died.")
@@ -143,4 +141,32 @@ func (p *person) AddAuthority(authority int) {
 
 func (p *person) DrawCards(n uint) {
 	p.drawToHand(n)
+}
+
+func (p *person) DiscardCard() {
+	p.ToDiscard++
+}
+
+func (p *person) DestroyBase() {
+
+}
+
+func (p *person) ScrapFromHand() {
+
+}
+
+func (p *person) ScrapFromDiscard() {
+
+}
+
+func (p *person) ScrapFromTradeRow(n uint) {
+
+}
+
+func (p *person) ScrapFromHandOrDiscard(n uint) {
+
+}
+
+func (p *person) AcquireCardLessThan(maxCost uint) {
+
 }

@@ -2,14 +2,22 @@ package game
 
 import (
 	log "github.com/sirupsen/logrus"
+	"github.com/valakuzhyk/planetdomains/card"
 )
 
-/* External Person interface */
+// TODO: If we want to handle the ability to choose what abilities activate when,
+// we will need some kind of registration system for the abilities (I think)
+
 func (p1 *person) PlayHand(p2 *person) {
 	log.Infof("******Printing Turn for %s********", p1.Name)
 
 	// Discard cards from your hand if needed
-	p1.DiscardCards(p1.NumToDiscard)
+	p1.DiscardCards(p1.ToDiscard)
+
+	// Apply effects from bases
+	for _, b := range p1.Bases {
+		b.PlayEffect(p1, p2)
+	}
 
 	// Apply all effects from cards
 	for len(p1.Hand) != 0 {
@@ -34,8 +42,12 @@ func resolveCards(p1, p2 *person) {
 		log.Debugf("Playing %s", c.GetName())
 		p1.Hand = p1.Hand[1:]
 
-		c.PlayEffect(p1)
-		p1.ResolvedCards = append(p1.ResolvedCards, c)
+		c.PlayEffect(p1, p2)
+		if base, ok := c.(card.Base); ok {
+			p1.Bases = append(p1.Bases, base)
+		} else {
+			p1.ResolvedCards = append(p1.ResolvedCards, c)
+		}
 	}
 }
 
@@ -53,4 +65,5 @@ func (p *person) DiscardCards(numToDiscard int) {
 	if numToDiscard > 0 {
 		log.Println("Discarding at the beginning of your turn is not implemented yet")
 	}
+	// TODO
 }

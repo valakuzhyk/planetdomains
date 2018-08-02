@@ -24,7 +24,7 @@ type Card interface {
 	GetName() string
 	GetCost() int
 	GetFaction() Faction
-	PlayEffect(internal.Player)
+	PlayEffect(p1, p2 internal.Player)
 }
 
 // String returns a string representing the card.
@@ -43,21 +43,21 @@ func String(c Card) string {
 }
 
 // Play plays a card
-func Play(c Card, p internal.Player) {
-	c.PlayEffect(p)
+func Play(c Card, p1, p2 internal.Player) {
+	c.PlayEffect(p1, p2)
 }
 
 // ScrapableCard has an additional effect that applies on trashing
 type ScrapableCard interface {
 	Card
-	ScrapEffect(internal.Player)
+	ScrapEffect(p1, p2 internal.Player)
 }
 
 // AllyableCard has an additional effect that applies when another card
 // of the same faction is played
 type AllyableCard interface {
 	Card
-	AllyEffect(internal.Player)
+	AllyEffect(p1, p2 internal.Player)
 }
 
 // Base cards exist until they are destroyed

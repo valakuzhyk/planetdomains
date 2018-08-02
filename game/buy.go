@@ -47,15 +47,14 @@ func buyExplorer(p *person) {
 		log.Println("No more explorers!")
 		return
 	}
-	e := explorers.Draw()
-	if e.GetCost() > p.GetTrade() {
+	eCost := explorers.Peek().GetCost()
+	if eCost > p.GetTrade() {
 		log.Printf("Cost %d greater than your trade %d. Insufficient Funds",
-			e.GetCost(),
+			eCost,
 			p.GetTrade())
-		explorers.PlaceOnTop(e)
 		return
 	}
-
+	e := explorers.Draw()
 	p.AddTrade(-e.GetCost())
 	p.Discard.PlaceOnTop(e)
 }
