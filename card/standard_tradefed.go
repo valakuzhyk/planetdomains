@@ -109,35 +109,3 @@ func (e centralStation) PlayEffect(p internal.Player) {
 	// Add abilities that are triggered once if certain conditions are met.
 }
 func (e centralStation) GetDefense() (int, bool) { return 5, false }
-
-// StandardDeck constructs the cards for a standardDeck
-func StandardDeck() Deck {
-	d := NewDeck()
-
-	counts := map[Card]int{
-		// Trade Federation Cards
-		centralStation{}:     2,
-		factoryWorld{}:       1,
-		federationShipyard{}: 1,
-		loyalColony{}:        1,
-		storageSilo{}:        2,
-		colonySeedShip{}:     1,
-		frontierFerry{}:      2,
-		patrolCutter{}:       3,
-		peacekeeper{}:        1,
-		solarSkiff{}:         3,
-		tradeHauler{}:        3,
-		commandCenter{}:      2,
-		imperialPalace{}:     1,
-	}
-
-	for object, count := range counts {
-		for i := 0; i < count; i++ {
-			d.PlaceOnTop(object)
-		}
-	}
-
-	d.Shuffle()
-
-	return d
-}

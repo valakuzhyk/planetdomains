@@ -15,9 +15,6 @@ func (p1 *person) PlayHand(p2 *person) {
 	for len(p1.Hand) != 0 {
 		// Put the cards that are in the resolved pile back in the hand
 		// to see if any synergies come about
-		p1.Hand = append(p1.Hand, p1.turnState.ResolvedCards...)
-		p1.turnState = turnState{}
-
 		resolveCards(p1, p2)
 		// Loop on buying cards and applying effects if those cards come into play
 		purchaseCards(p1)
