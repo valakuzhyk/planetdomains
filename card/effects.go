@@ -2,6 +2,7 @@ package card
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/valakuzhyk/planetdomains/internal"
 )
@@ -85,4 +86,19 @@ func (e ScrapCards) Activate(c Card, p1, p2 internal.Player) {
 func (e ScrapCards) String() string {
 	// TODO location
 	return fmt.Sprintf("Scrap %d cards", e.Amount)
+}
+
+type ChooseBetween struct {
+	Options []Effect
+}
+
+func (e ChooseBetween) Activate(c Card, p1, p2 internal.Player) {
+	// TODO
+}
+func (e ChooseBetween) String() string {
+	strs := []string{}
+	for _, e := range e.Options {
+		strs = append(strs, e.String())
+	}
+	return strings.Join(strs, " or ")
 }

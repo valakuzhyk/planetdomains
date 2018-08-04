@@ -63,10 +63,13 @@ func theWrecker() Card {
 func frontierStation() Card {
 	return &BaseImpl{
 		Ship: Ship{
-			Name:        "Frontier Station",
-			Cost:        6,
-			Factions:    []Faction{MACHINE_CULT},
-			PlayEffects: []Effect{AddCombat{2} /* or 3 combat */},
+			Name:     "Frontier Station",
+			Cost:     6,
+			Factions: []Faction{MACHINE_CULT},
+			PlayEffects: []Effect{ChooseBetween{[]Effect{
+				AddTrade{2},
+				AddCombat{3},
+			}}},
 		},
 		Defense:       6,
 		IsBaseOutpost: true,

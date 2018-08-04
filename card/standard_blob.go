@@ -75,10 +75,14 @@ func moonwurm() Card {
 
 func parasite() Card {
 	return &Ship{
-		Name:        "Parasite",
-		Cost:        5,
-		Factions:    []Faction{BLOB},
-		PlayEffects: []Effect{AddCombat{6} /* Or acquire card of 6 or less */},
+		Name:     "Parasite",
+		Cost:     5,
+		Factions: []Faction{BLOB},
+		PlayEffects: []Effect{
+			ChooseBetween{[]Effect{
+				AddCombat{6},
+				AcquireCardLessThan{6}},
+			}},
 		AllyEffects: []Effect{DrawCards{1}},
 	}
 }
