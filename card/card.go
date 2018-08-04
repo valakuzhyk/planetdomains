@@ -2,7 +2,6 @@ package card
 
 import (
 	"github.com/fatih/color"
-	"github.com/valakuzhyk/planetdomains/internal"
 )
 
 // Faction represents what group the card is aligned with, and how it gets
@@ -18,17 +17,47 @@ const (
 	TRADE_FED
 )
 
+type Ship struct {
+	Name     string
+	Cost     int
+	Factions []Faction
+
+	PlayEffects          []Effect
+	AllyEffects          []Effect
+	ScrapEffects         []Effect
+	playAbilityActivated bool
+	allyAbilityActivated bool
+}
+
+func (c *Ship) GetName() string { return c.Name }
+func (c *Ship) GetCost() int    { return c.Cost }
+func (c *Ship) GetFaction() Faction {
+	if len(c.Factions) > 0 {
+		return c.Factions[0]
+	}
+	return UNALIGNED
+}
+
+func (c *Ship) Reset() {
+	c.playAbilityActivated = false
+	c.allyAbilityActivated = false
+}
+
 // Card represents a card in the game
 // TODO: this needs to include the field and other players
 type Card interface {
 	GetName() string
 	GetCost() int
 	GetFaction() Faction
-	PlayEffect(p1, p2 internal.Player)
+	Reset()
+	GetPlayEffects() []Effect
+	GetAllyEffects() []Effect
+	GetScrapEffects() []Effect
+	String() string
 }
 
 // String returns a string representing the card.
-func String(c Card) string {
+func (c Ship) String() string {
 	switch c.GetFaction() {
 	case TRADE_FED:
 		return color.BlueString(c.GetName())
@@ -46,31 +75,40 @@ func String(c Card) string {
 func StringList(cards ...Card) []string {
 	cardlist := make([]string, len(cards))
 	for i, c := range cards {
-		cardlist[i] = String(c)
+		cardlist[i] = c.String()
 	}
 	return cardlist
 }
 
-// Play plays a card
-func Play(c Card, p1, p2 internal.Player) {
-	c.PlayEffect(p1, p2)
+func (c *Ship) GetPlayEffects() []Effect {
+	return c.PlayEffects
 }
 
-// ScrapableCard has an additional effect that applies on trashing
-type ScrapableCard interface {
-	Card
-	ScrapEffect(p1, p2 internal.Player)
+func (c *Ship) GetScrapEffects() []Effect {
+	return c.ScrapEffects
 }
 
-// AllyableCard has an additional effect that applies when another card
-// of the same faction is played
-type AllyableCard interface {
-	Card
-	AllyEffect(p1, p2 internal.Player)
+func (c *Ship) GetAllyEffects() []Effect {
+	return c.AllyEffects
+}
+
+type BaseImpl struct {
+	Ship
+	Defense       int
+	IsBaseOutpost bool
+}
+
+func (b *BaseImpl) GetDefense() int {
+	return b.Defense
+}
+
+func (b *BaseImpl) IsOutpost() bool {
+	return b.IsBaseOutpost
 }
 
 // Base cards exist until they are destroyed
 type Base interface {
 	Card
-	GetDefense() (strength int, isOutpost bool)
+	GetDefense() int
+	IsOutpost() bool
 }
