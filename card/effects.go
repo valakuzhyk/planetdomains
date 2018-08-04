@@ -74,6 +74,20 @@ const (
 	ScrapLocation_TRADE_ROW
 )
 
+func (s ScrapLocation) String() string {
+	switch s {
+	case ScrapLocation_HAND:
+		return "hand"
+	case ScrapLocation_DISCARD:
+		return "discard"
+	case ScrapLocation_HAND_OR_DISCARD:
+		return "hand or discard"
+	case ScrapLocation_TRADE_ROW:
+		return "trade row"
+	}
+	return "Unknown??"
+}
+
 type ScrapCards struct {
 	Amount   uint
 	Location ScrapLocation
@@ -81,11 +95,15 @@ type ScrapCards struct {
 }
 
 func (e ScrapCards) Activate(c Card, p1, p2 internal.Player) {
-	// TODO
+	switch e.Location {
+	case ScrapLocation_DISCARD:
+	case ScrapLocation_HAND:
+	case ScrapLocation_HAND_OR_DISCARD:
+	case ScrapLocation_TRADE_ROW:
+	}
 }
 func (e ScrapCards) String() string {
-	// TODO location
-	return fmt.Sprintf("Scrap %d cards", e.Amount)
+	return fmt.Sprintf("Scrap %d cards from %s", e.Amount, e.Location.String())
 }
 
 type ChooseBetween struct {
