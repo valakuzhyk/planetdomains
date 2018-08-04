@@ -8,6 +8,7 @@ import (
 )
 
 func main() {
+	game.StartupMenu()
 	p1, p2, err := game.CreateFor2()
 	if err != nil {
 		log.Fatal("Unable to create Game:", err)
