@@ -5,6 +5,8 @@ import (
 	"log"
 	"strings"
 
+	"github.com/valakuzhyk/planetdomains/internal"
+
 	"github.com/valakuzhyk/planetdomains/card"
 )
 
@@ -26,7 +28,7 @@ type turnState struct {
 	// Present at the beginning of the turn, must be resolved before doing anything else.
 	ToDiscard int
 
-	ResolvedCards       []card.Card
+	PlayedCards         []card.Card
 	Trade               int
 	Combat              int
 	AdditionalAuthority int
@@ -73,11 +75,11 @@ func (p *person) discardHandAndResolved() {
 	for _, card := range p.Hand {
 		p.Discard.PlaceOnTop(card)
 	}
-	for _, card := range p.ResolvedCards {
+	for _, card := range p.PlayedCards {
 		p.Discard.PlaceOnTop(card)
 	}
 	p.Hand = []card.Card{}
-	p.ResolvedCards = []card.Card{}
+	p.PlayedCards = []card.Card{}
 }
 
 // draws cards from the deck to the hand
@@ -97,7 +99,9 @@ func (p *person) draw(n uint) []card.Card {
 		if uint(len(drawnCards)) == n {
 			return drawnCards
 		}
-		drawnCards = append(drawnCards, p.Deck.Draw())
+		c := p.Deck.Draw()
+		c.Reset()
+		drawnCards = append(drawnCards, c)
 	}
 
 	if p.Discard.IsEmpty() {
@@ -150,7 +154,7 @@ func (p *person) DiscardCard() {
 	p.ToDiscard++
 }
 
-func (p *person) DestroyBase() {
+func (p *person) DestroyBase(opponent internal.Player) {
 
 }
 

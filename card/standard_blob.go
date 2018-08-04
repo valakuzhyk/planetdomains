@@ -44,7 +44,7 @@ func stellarReef() Card {
 
 func cargoPod() Card {
 	return &Ship{
-		Name:         "Plasma Vent",
+		Name:         "Cargo Pod",
 		Cost:         3,
 		Factions:     []Faction{BLOB},
 		PlayEffects:  []Effect{AddTrade{3}},

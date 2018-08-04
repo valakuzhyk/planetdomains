@@ -34,7 +34,7 @@ func DefaultStarterDeck() Deck {
 func explorer() Card {
 	return &Ship{
 		Name:         "Explorer",
-		Cost:         0,
+		Cost:         2,
 		Factions:     []Faction{},
 		PlayEffects:  []Effect{AddTrade{2}},
 		ScrapEffects: []Effect{AddCombat{2}},

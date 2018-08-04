@@ -1,6 +1,8 @@
 package card
 
 import (
+	"strings"
+
 	"github.com/fatih/color"
 )
 
@@ -60,13 +62,13 @@ type Card interface {
 func (c Ship) String() string {
 	switch c.GetFaction() {
 	case TRADE_FED:
-		return color.BlueString(c.GetName())
+		return color.HiBlueString(c.GetName())
 	case BLOB:
-		return color.GreenString(c.GetName())
+		return color.HiGreenString(c.GetName())
 	case MACHINE_CULT:
-		return color.RedString(c.GetName())
+		return color.HiRedString(c.GetName())
 	case STAR_EMPIRE:
-		return color.YellowString(c.GetName())
+		return color.HiYellowString(c.GetName())
 	}
 	return c.GetName()
 }
@@ -78,6 +80,10 @@ func StringList(cards ...Card) []string {
 		cardlist[i] = c.String()
 	}
 	return cardlist
+}
+
+func List(cards ...Card) string {
+	return strings.Join(StringList(cards...), ", ")
 }
 
 func (c *Ship) GetPlayEffects() []Effect {

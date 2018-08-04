@@ -9,7 +9,7 @@ the rpc sends over the options that you have, and the client simply renders thos
 We can create rooms? Where people can play if they want.
 
 
-# Designing the card interface
+## Designing the card interface
 
 A card can 
 * Either be a ship or a base

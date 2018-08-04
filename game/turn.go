@@ -3,6 +3,8 @@ package game
 import (
 	"fmt"
 
+	"github.com/manifoldco/promptui"
+
 	"github.com/buger/goterm"
 	log "github.com/sirupsen/logrus"
 	"github.com/valakuzhyk/planetdomains/card"
@@ -11,27 +13,57 @@ import (
 // TODO: If we want to handle the ability to choose what abilities activate when,
 // we will need some kind of registration system for the abilities (I think)
 
-func (p1 *person) PlayHand(p2 *person) {
-	goterm.Clear()
-	goterm.Flush()
-	fmt.Println(p1)
-	fmt.Printf("******Printing Turn for %s********\n", p1.Name)
+func (f *Field) PlayHand() {
+	playCardsOption := "Play Cards"
+	activateAbilitiesOption := "Activate Abilities"
+	buyCardsOption := "Buy Cards"
+	endTurnOption := "End Turn"
+
+	p1 := f.players[f.activePlayer]
+	p2 := f.players[(f.activePlayer+1)%len(f.players)]
 
 	// Discard cards from your hand if needed
 	p1.DiscardCards(p1.ToDiscard)
-
-	// Apply effects from bases
 	for _, b := range p1.Bases {
 		b.Reset()
 	}
 
 	// Apply all effects from cards
-	for len(p1.Hand) != 0 {
-		// Put the cards that are in the resolved pile back in the hand
-		// to see if any synergies come about
-		resolveCards(p1, p2)
-		// Loop on buying cards and applying effects if those cards come into play
-		purchaseCards(p1)
+	for true {
+		goterm.Clear()
+		goterm.Flush()
+		fmt.Println(p1.field)
+
+		options := []string{endTurnOption, activateAbilitiesOption}
+		if len(p1.Hand) != 0 {
+			options = append(options, playCardsOption)
+		}
+		if p1.Trade != 0 {
+			options = append(options, buyCardsOption)
+		}
+
+		prompt := promptui.Select{
+			Label: "Which card would you like to purchase:",
+			Items: options,
+			Size:  7,
+		}
+		_, chosenOption, err := prompt.Run()
+
+		if err != nil {
+			log.Fatal("Error choosing option: ", err)
+		}
+		if chosenOption == endTurnOption {
+			break
+		}
+
+		switch chosenOption {
+		case buyCardsOption:
+			purchaseCards(p1)
+		case activateAbilitiesOption:
+			resolveCards(p1, p2)
+		case playCardsOption:
+			resolveCards(p1, p2)
+		}
 	}
 
 	// Commit the effects after
@@ -40,6 +72,7 @@ func (p1 *person) PlayHand(p2 *person) {
 	p1.discardHandAndResolved()
 	p1.turnState = turnState{}
 	p1.drawToHand(5)
+	f.activePlayer = (f.activePlayer + 1) % len(f.players)
 }
 
 func resolveCards(p1, p2 *person) {
@@ -48,11 +81,13 @@ func resolveCards(p1, p2 *person) {
 		log.Debugf("Playing %s", c.GetName())
 		p1.Hand = p1.Hand[1:]
 
-		c.GetPlayEffects()
+		for _, e := range c.GetPlayEffects() {
+			e.Activate(c, p1, p2)
+		}
 		if base, ok := c.(card.Base); ok {
 			p1.Bases = append(p1.Bases, base)
 		} else {
-			p1.ResolvedCards = append(p1.ResolvedCards, c)
+			p1.PlayedCards = append(p1.PlayedCards, c)
 		}
 	}
 }

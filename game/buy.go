@@ -1,47 +1,45 @@
 package game
 
 import (
+	"bufio"
 	"fmt"
+	"os"
 
-	log "github.com/sirupsen/logrus"
+	"github.com/valakuzhyk/planetdomains/card"
+
+	"github.com/buger/goterm"
 )
 
 func purchaseCards(p *person) {
 	// If possible try and purchase some cards
 	// 0 represents explorer
 	for true {
-		log.Debug(p.field)
-		printPurchaseOptions(p.field)
-		fmt.Printf("You have %d Trade, would you like to buy a card?\n", p.GetTrade())
-		var i int
-		_, err := fmt.Scanf("%d", &i)
-		if err != nil {
-			fmt.Printf("Could not understand input. Try again\n")
-			continue
-		}
-		if i < 0 {
+		goterm.Clear()
+		goterm.Flush()
+		choice := getPurchaseChoice(p.field)
+
+		if choice < 0 {
 			break
 		}
-
-		if i == 0 {
+		if choice == 0 {
 			buyExplorer(p)
 		} else {
-			buyFromTradeRow(p, i)
+			buyFromTradeRow(p, choice)
 		}
+		bufio.NewReader(os.Stdin).ReadBytes('\n')
 	}
 	return
 }
 
-func printPurchaseOptions(field *Field) {
-	fmt.Printf("Cards for Purchase:\n")
-	if field.Explorers.IsEmpty() {
-		fmt.Printf("   0: N/A XXXX\n")
-	} else {
-		fmt.Printf("   0: %s %d\n", field.Explorers.Peek().GetName(), field.Explorers.Peek().GetCost())
+func getPurchaseChoice(field *Field) int {
+
+	cardsToSelectFrom := field.TradeRow
+	if !field.Explorers.IsEmpty() {
+		cardsToSelectFrom = append([]card.Card{field.Explorers.Peek()}, cardsToSelectFrom...)
 	}
-	for i, c := range field.TradeRow {
-		fmt.Printf("   %d: %s %d\n", i+1, c.String(), c.GetCost())
-	}
+
+	i := pickCard(cardsToSelectFrom)
+	return i
 }
 
 func buyExplorer(p *person) {
