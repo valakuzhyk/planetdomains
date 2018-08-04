@@ -21,7 +21,7 @@ func plasmaVent() Card {
 			Cost:         6,
 			Factions:     []Faction{BLOB},
 			PlayEffects:  []Effect{AddCombat{4} /*  Put on top of deck when buying */},
-			ScrapEffects: []Effect{DestroyBase{1}},
+			ScrapEffects: []Effect{DestroyBase{}},
 		},
 		Defense:       5,
 		IsBaseOutpost: false,
@@ -58,7 +58,7 @@ func leviathan() Card {
 		Name:        "Leviathan",
 		Cost:        8,
 		Factions:    []Faction{BLOB},
-		PlayEffects: []Effect{AddCombat{9}, DrawCards{1}, DestroyBase{1}},
+		PlayEffects: []Effect{AddCombat{9}, DrawCards{1}, DestroyBase{}},
 		AllyEffects: []Effect{AcquireCardLessThan{3}},
 	}
 }

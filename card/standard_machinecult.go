@@ -26,7 +26,7 @@ func mechCruiser() Card {
 		Cost:        5,
 		Factions:    []Faction{MACHINE_CULT},
 		PlayEffects: []Effect{AddCombat{6}, ScrapCards{1, ScrapLocation_HAND_OR_DISCARD, false}},
-		AllyEffects: []Effect{DestroyBase{1}},
+		AllyEffects: []Effect{DestroyBase{}},
 	}
 }
 

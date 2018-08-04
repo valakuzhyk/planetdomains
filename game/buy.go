@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	log "github.com/sirupsen/logrus"
-	"github.com/valakuzhyk/planetdomains/card"
 )
 
 func purchaseCards(p *person) {
@@ -41,7 +40,7 @@ func printPurchaseOptions(field *Field) {
 		fmt.Printf("   0: %s %d\n", field.Explorers.Peek().GetName(), field.Explorers.Peek().GetCost())
 	}
 	for i, c := range field.TradeRow {
-		fmt.Printf("   %d: %s %d\n", i+1, card.String(c), c.GetCost())
+		fmt.Printf("   %d: %s %d\n", i+1, c.String(), c.GetCost())
 	}
 }
 

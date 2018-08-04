@@ -16,7 +16,7 @@ func frontierFerry() Card {
 		Cost:         4,
 		Factions:     []Faction{TRADE_FED},
 		PlayEffects:  []Effect{AddTrade{3}, AddAuthority{4}},
-		ScrapEffects: []Effect{DestroyBase{1}},
+		ScrapEffects: []Effect{DestroyBase{}},
 	}
 }
 

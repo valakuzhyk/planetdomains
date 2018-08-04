@@ -22,7 +22,7 @@ func (p1 *person) PlayHand(p2 *person) {
 
 	// Apply effects from bases
 	for _, b := range p1.Bases {
-		b.PlayEffect(p1, p2)
+		b.Reset()
 	}
 
 	// Apply all effects from cards
@@ -48,7 +48,7 @@ func resolveCards(p1, p2 *person) {
 		log.Debugf("Playing %s", c.GetName())
 		p1.Hand = p1.Hand[1:]
 
-		c.PlayEffect(p1, p2)
+		c.GetPlayEffects()
 		if base, ok := c.(card.Base); ok {
 			p1.Bases = append(p1.Bases, base)
 		} else {

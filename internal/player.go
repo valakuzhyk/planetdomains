@@ -8,7 +8,7 @@ type Player interface {
 	AddAuthority(int)
 	DrawCards(uint)
 	DiscardCard()
-	DestroyBase()
+	DestroyBase(p Player)
 	ScrapFromHand()
 	ScrapFromDiscard()
 	ScrapFromHandOrDiscard(uint)
