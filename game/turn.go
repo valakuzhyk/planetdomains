@@ -105,7 +105,7 @@ func commitTurnState(p1, p2 *person) {
 
 func (p *person) DiscardCards(numToDiscard int) {
 	for numToDiscard > 0 && len(p.Hand) > 0 {
-		_ = utils.PickCard("What card would you like to discard?", p.Hand)
+		_ = utils.PickCard("What card would you like to discard?", p.Hand, true /* required */)
 
 		// get rid of the
 

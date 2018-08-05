@@ -9,8 +9,11 @@ import (
 	"github.com/valakuzhyk/planetdomains/card"
 )
 
-func PickCard(question string, cards []card.Card) int {
-	cardsToSelectFrom := append([]card.Card{nil}, cards...)
+func PickCard(question string, cards []card.Card, isRequired bool) int {
+	cardsToSelectFrom := cards
+	if isRequired {
+		cardsToSelectFrom = append([]card.Card{nil}, cards...)
+	}
 
 	templates := &promptui.SelectTemplates{
 		Label:    "{{ . }}?",

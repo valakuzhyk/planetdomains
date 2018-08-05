@@ -38,7 +38,10 @@ func getPurchaseChoice(playerTrade int, field *Field) int {
 		cardsToSelectFrom = append([]card.Card{field.Explorers.Peek()}, cardsToSelectFrom...)
 	}
 
-	i := utils.PickCard(fmt.Sprintf("You have %d trade, what would you like to buy?", playerTrade), cardsToSelectFrom)
+	i := utils.PickCard(
+		fmt.Sprintf("You have %d trade, what would you like to buy?", playerTrade),
+		cardsToSelectFrom,
+		false /* not required */)
 	return i
 }
 
