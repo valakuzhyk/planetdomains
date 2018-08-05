@@ -7,6 +7,8 @@ import (
 	"github.com/ryanuber/columnize"
 
 	"github.com/valakuzhyk/planetdomains/card"
+	"github.com/valakuzhyk/planetdomains/decks/colonywars"
+	"github.com/valakuzhyk/planetdomains/decks/standard"
 )
 
 // Field contains cards that are not affiliated with a player yet
@@ -17,6 +19,10 @@ type Field struct {
 	Explorers    card.Deck
 	ScrapHeap    []card.Card
 	TradeDeck    card.Deck
+}
+
+func (f Field) GetActivePerson() *person {
+	return f.players[f.activePlayer]
 }
 
 func (f Field) String() string {
@@ -56,7 +62,7 @@ func (f Field) String() string {
 
 // CreateFor2 returns a new game for 2.
 func CreateFor2() (*Field, error) {
-	tradeDeck := card.StandardDeck()
+	tradeDeck := colonywars.Deck()
 	tradeRow := []card.Card{}
 	for i := 0; i < 5; i++ {
 		c := tradeDeck.Draw()
@@ -66,17 +72,17 @@ func CreateFor2() (*Field, error) {
 	f := &Field{
 		TradeDeck: tradeDeck,
 		TradeRow:  tradeRow,
-		Explorers: card.NewExplorerDeck(),
+		Explorers: standard.NewExplorerDeck(),
 		ScrapHeap: []card.Card{},
 	}
 
-	p1, err := newPerson("Player 1", 50, card.DefaultStarterDeck(), f)
+	p1, err := newPerson("Player 1", 50, standard.StarterDeck(), f)
 	if err != nil {
 		return nil, err
 	}
 	p1.drawToHand(3)
 
-	p2, err := newPerson("Player 2", 50, card.DefaultStarterDeck(), f)
+	p2, err := newPerson("Player 2", 50, standard.StarterDeck(), f)
 	if err != nil {
 		return nil, err
 	}

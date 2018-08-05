@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/valakuzhyk/planetdomains/card"
+	"github.com/valakuzhyk/planetdomains/utils"
 
 	"github.com/buger/goterm"
 )
@@ -16,7 +17,7 @@ func purchaseCards(p *person) {
 	for true {
 		goterm.Clear()
 		goterm.Flush()
-		choice := getPurchaseChoice(p.field)
+		choice := getPurchaseChoice(p.Trade, p.field)
 
 		if choice < 0 {
 			break
@@ -31,21 +32,20 @@ func purchaseCards(p *person) {
 	return
 }
 
-func getPurchaseChoice(field *Field) int {
-
+func getPurchaseChoice(playerTrade int, field *Field) int {
 	cardsToSelectFrom := field.TradeRow
 	if !field.Explorers.IsEmpty() {
 		cardsToSelectFrom = append([]card.Card{field.Explorers.Peek()}, cardsToSelectFrom...)
 	}
 
-	i := pickCard(cardsToSelectFrom)
+	i := utils.PickCard(fmt.Sprintf("You have %d trade, what would you like to buy?", playerTrade), cardsToSelectFrom)
 	return i
 }
 
 func buyExplorer(p *person) {
 	explorers := p.field.Explorers
 	if explorers.IsEmpty() {
-		fmt.Println("No more explorers!\n")
+		fmt.Println("No more explorers!")
 		return
 	}
 	eCost := explorers.Peek().GetCost()

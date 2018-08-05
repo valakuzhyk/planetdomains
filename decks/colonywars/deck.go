@@ -1,60 +1,15 @@
-package card
+package colonywars
 
-func scout() Card {
-	return &Ship{
-		Name:        "Scout",
-		Cost:        0,
-		Factions:    []Faction{},
-		PlayEffects: []Effect{AddTrade{1}},
-	}
-}
-
-func viper() Card {
-	return &Ship{
-		Name:        "Viper",
-		Cost:        0,
-		Factions:    []Faction{},
-		PlayEffects: []Effect{AddCombat{1}},
-	}
-}
-
-// DefaultStarterDeck is what a player normally starts with at the beginning of the game
-func DefaultStarterDeck() Deck {
-	d := &deckImpl{}
-	for i := 0; i < 8; i++ {
-		d.PlaceOnTop(scout())
-	}
-	for i := 0; i < 2; i++ {
-		d.PlaceOnTop(viper())
-	}
-	d.Shuffle()
-	return d
-}
-
-func explorer() Card {
-	return &Ship{
-		Name:         "Explorer",
-		Cost:         2,
-		Factions:     []Faction{},
-		PlayEffects:  []Effect{AddTrade{2}},
-		ScrapEffects: []Effect{AddCombat{2}},
-	}
-}
-
-// NewExplorerDeck returns a new deck containing 10 explorers
-func NewExplorerDeck() Deck {
-	d := &deckImpl{}
-	for i := 0; i < 10; i++ {
-		d.PlaceOnTop(explorer())
-	}
-	return d
-}
+import (
+	"github.com/valakuzhyk/planetdomains/card"
+	"github.com/valakuzhyk/planetdomains/cardimpl"
+)
 
 // StandardDeck constructs the cards for a standardDeck
-func StandardDeck() Deck {
-	d := NewDeck()
+func Deck() card.Deck {
+	d := cardimpl.NewDeck()
 
-	counts := map[Card]int{
+	counts := map[card.Card]int{
 		// Trade Federation Cards
 		centralStation():     2,
 		factoryWorld():       1,

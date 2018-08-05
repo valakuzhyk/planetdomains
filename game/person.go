@@ -5,6 +5,7 @@ import (
 	"log"
 	"strings"
 
+	"github.com/valakuzhyk/planetdomains/cardimpl"
 	"github.com/valakuzhyk/planetdomains/internal"
 
 	"github.com/valakuzhyk/planetdomains/card"
@@ -47,7 +48,7 @@ func newPerson(name string, startingAuthority int, startingDeck card.Deck, field
 		Name:      name,
 		Authority: startingAuthority,
 		Deck:      startingDeck,
-		Discard:   card.NewDeck(),
+		Discard:   cardimpl.NewDeck(),
 		field:     field,
 	}, nil
 }
@@ -171,9 +172,5 @@ func (p *person) ScrapFromTradeRow(n uint) {
 }
 
 func (p *person) ScrapFromHandOrDiscard(n uint) {
-
-}
-
-func (p *person) AcquireCardLessThan(maxCost uint) {
 
 }

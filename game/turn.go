@@ -8,6 +8,7 @@ import (
 	"github.com/buger/goterm"
 	log "github.com/sirupsen/logrus"
 	"github.com/valakuzhyk/planetdomains/card"
+	"github.com/valakuzhyk/planetdomains/utils"
 )
 
 // TODO: If we want to handle the ability to choose what abilities activate when,
@@ -43,9 +44,9 @@ func (f *Field) PlayHand() {
 		}
 
 		prompt := promptui.Select{
-			Label: "Which card would you like to purchase:",
+			Label: "Which would you like to do?:",
 			Items: options,
-			Size:  7,
+			Size:  5,
 		}
 		_, chosenOption, err := prompt.Run()
 
@@ -103,8 +104,10 @@ func commitTurnState(p1, p2 *person) {
 }
 
 func (p *person) DiscardCards(numToDiscard int) {
-	if numToDiscard > 0 {
-		log.Println("Discarding at the beginning of your turn is not implemented yet")
+	for numToDiscard > 0 && len(p.Hand) > 0 {
+		_ = utils.PickCard("What card would you like to discard?", p.Hand)
+
+		// get rid of the
+
 	}
-	// TODO
 }

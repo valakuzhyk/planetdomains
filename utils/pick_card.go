@@ -1,4 +1,4 @@
-package game
+package utils
 
 import (
 	"bufio"
@@ -9,7 +9,7 @@ import (
 	"github.com/valakuzhyk/planetdomains/card"
 )
 
-func pickCard(cards []card.Card) int {
+func PickCard(question string, cards []card.Card) int {
 	cardsToSelectFrom := append([]card.Card{nil}, cards...)
 
 	templates := &promptui.SelectTemplates{
@@ -26,7 +26,7 @@ func pickCard(cards []card.Card) int {
 {{ "Scrap Effects:" | faint }}	{{ range .GetScrapEffects }}{{.String}}, {{else}} {{ end }}`,
 	}
 	prompt := promptui.Select{
-		Label:     "Which card would you like to purchase:",
+		Label:     question,
 		Items:     cardsToSelectFrom,
 		Templates: templates,
 		Size:      7,

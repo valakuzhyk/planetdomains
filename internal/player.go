@@ -13,5 +13,4 @@ type Player interface {
 	ScrapFromDiscard()
 	ScrapFromHandOrDiscard(uint)
 	ScrapFromTradeRow(uint)
-	AcquireCardLessThan(uint)
 }
