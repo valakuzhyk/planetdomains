@@ -19,9 +19,9 @@ type person struct {
 	Authority int
 	Deck      card.Deck
 	Discard   card.Deck
-	Bases     []card.Card
+	Bases     card.Group
 
-	Hand []card.Card
+	Hand card.Group
 	turnState
 }
 
@@ -29,7 +29,7 @@ type turnState struct {
 	// Present at the beginning of the turn, must be resolved before doing anything else.
 	ToDiscard int
 
-	PlayedCards         []card.Card
+	PlayedCards         card.Group
 	Trade               int
 	Combat              int
 	AdditionalAuthority int
@@ -60,32 +60,28 @@ func (p *person) String() string {
 	s = append(s, fmt.Sprintf("Deck len: %d, Discard len: %d", p.Deck.Len(), p.Discard.Len()))
 	s = append(s, "")
 
-	if len(p.Bases) > 0 {
-		cards := card.StringList(p.Bases...)
-		s = append(s, "Bases: "+strings.Join(cards, ", "))
+	if p.Bases.Len() > 0 {
+		s = append(s, fmt.Sprintf("Bases: %v", p.Bases))
 	}
 
-	cards := card.StringList(p.Hand...)
-	s = append(s, "Hand: "+strings.Join(cards, ", "))
+	s = append(s, fmt.Sprintf("Hand: %v", p.Hand))
 
 	return strings.Join(s, "\n")
 }
 
 // places the hand in the discard pile
 func (p *person) discardHandAndResolved() {
-	for _, card := range p.Hand {
-		p.Discard.PlaceOnTop(card)
+	for p.Hand.Len() != 0 {
+		p.Discard.PlaceOnTop(p.Hand.Take(0))
 	}
-	for _, card := range p.PlayedCards {
-		p.Discard.PlaceOnTop(card)
+	for p.PlayedCards.Len() != 0 {
+		p.Discard.PlaceOnTop(p.PlayedCards.Take(0))
 	}
-	p.Hand = []card.Card{}
-	p.PlayedCards = []card.Card{}
 }
 
 // draws cards from the deck to the hand
 func (p *person) drawToHand(n uint) {
-	p.Hand = append(p.Hand, p.draw(n)...)
+	p.Hand.Add(p.draw(n)...)
 }
 
 func (p *person) draw(n uint) []card.Card {

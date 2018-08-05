@@ -15,9 +15,9 @@ import (
 type Field struct {
 	activePlayer int
 	players      []*person
-	TradeRow     []card.Card
+	TradeRow     card.Group
 	Explorers    card.Deck
-	ScrapHeap    []card.Card
+	ScrapHeap    card.Group
 	TradeDeck    card.Deck
 }
 
@@ -33,25 +33,25 @@ func (f Field) String() string {
 		fmt.Sprintf("----%s---- | ----Field---- | ----%s----", p1.Name, p2.Name),
 		fmt.Sprintf("Authority: %d | Explorers: %d | Authority: %d", p1.Authority, f.Explorers.Len(), p2.Authority),
 		fmt.Sprintf("Combat:    %d | Deck:      %d | Combat:    %d", p1.Combat, f.TradeDeck.Len(), p2.Combat),
-		fmt.Sprintf("Trade:     %d | Scrap:     %d | Trade:     %d", p1.Trade, len(f.ScrapHeap), p2.Trade),
+		fmt.Sprintf("Trade:     %d | Scrap:     %d | Trade:     %d", p1.Trade, f.ScrapHeap.Len(), p2.Trade),
 		fmt.Sprintf("Deck:      %d |               | Deck:      %d", p1.Deck.Len(), p2.Deck.Len()),
-		fmt.Sprintf("Hand:      %d |               | Hand:      %d", len(p1.Hand), len(p2.Hand)),
+		fmt.Sprintf("Hand:      %d |               | Hand:      %d", p1.Hand.Len(), p2.Hand.Len()),
 		fmt.Sprintf("Discard:   %d |               | Discard:   %d", p1.Discard.Len(), p2.Discard.Len()),
 	}
 	result := columnize.SimpleFormat(table)
 	s = append(s, result)
-	s = append(s, fmt.Sprintf("Trade Row: %s", card.List(f.TradeRow...)))
+	s = append(s, fmt.Sprintf("Trade Row: %v", f.TradeRow))
 	s = append(s, "")
 
 	activePlayer := f.players[f.activePlayer]
 	s = append(s, fmt.Sprintf("%s Turn", activePlayer.Name))
-	if len(activePlayer.Bases) != 0 {
-		s = append(s, fmt.Sprintf("Bases: %v", card.List(activePlayer.Bases...)))
+	if activePlayer.Bases.Len() != 0 {
+		s = append(s, fmt.Sprintf("Bases: %v", activePlayer.Bases))
 	}
-	if len(activePlayer.PlayedCards) != 0 {
-		s = append(s, fmt.Sprintf("Played: %v", card.List(activePlayer.PlayedCards...)))
+	if activePlayer.PlayedCards.Len() != 0 {
+		s = append(s, fmt.Sprintf("Played: %v", activePlayer.PlayedCards))
 	}
-	s = append(s, fmt.Sprintf("Hand: %v", card.List(activePlayer.Hand...)))
+	s = append(s, fmt.Sprintf("Hand: %v", activePlayer.Hand))
 
 	s = append(s, "")
 	// Print cards on trade row
@@ -71,9 +71,9 @@ func CreateFor2() (*Field, error) {
 
 	f := &Field{
 		TradeDeck: tradeDeck,
-		TradeRow:  tradeRow,
+		TradeRow:  card.Group{tradeRow},
 		Explorers: standard.NewExplorerDeck(),
-		ScrapHeap: []card.Card{},
+		ScrapHeap: card.Group{},
 	}
 
 	p1, err := newPerson("Player 1", 50, standard.StarterDeck(), f)

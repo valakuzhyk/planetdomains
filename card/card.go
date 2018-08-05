@@ -1,8 +1,6 @@
 package card
 
 import (
-	"strings"
-
 	"github.com/valakuzhyk/planetdomains/internal"
 )
 
@@ -53,8 +51,4 @@ func StringList(cards ...Card) []string {
 		cardlist[i] = c.String()
 	}
 	return cardlist
-}
-
-func List(cards ...Card) string {
-	return strings.Join(StringList(cards...), ", ")
 }

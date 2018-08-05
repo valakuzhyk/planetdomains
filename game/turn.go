@@ -25,7 +25,7 @@ func (f *Field) PlayHand() {
 
 	// Discard cards from your hand if needed
 	p1.DiscardCards(p1.ToDiscard)
-	for _, b := range p1.Bases {
+	for _, b := range p1.Bases.Cards {
 		b.Reset()
 	}
 
@@ -36,7 +36,7 @@ func (f *Field) PlayHand() {
 		fmt.Println(p1.field)
 
 		options := []string{endTurnOption, activateAbilitiesOption}
-		if len(p1.Hand) != 0 {
+		if p1.Hand.Len() != 0 {
 			options = append(options, playCardsOption)
 		}
 		if p1.Trade != 0 {
@@ -77,18 +77,17 @@ func (f *Field) PlayHand() {
 }
 
 func resolveCards(p1, p2 *person) {
-	for len(p1.Hand) != 0 {
-		c := p1.Hand[0]
+	for p1.Hand.Len() != 0 {
+		c := p1.Hand.Take(0)
 		log.Debugf("Playing %s", c.GetName())
-		p1.Hand = p1.Hand[1:]
 
 		for _, e := range c.GetPlayEffects() {
 			e.Activate(c, p1, p2)
 		}
 		if base, ok := c.(card.Base); ok {
-			p1.Bases = append(p1.Bases, base)
+			p1.Bases.Add(base)
 		} else {
-			p1.PlayedCards = append(p1.PlayedCards, c)
+			p1.PlayedCards.Add(c)
 		}
 	}
 }
@@ -104,8 +103,8 @@ func commitTurnState(p1, p2 *person) {
 }
 
 func (p *person) DiscardCards(numToDiscard int) {
-	for numToDiscard > 0 && len(p.Hand) > 0 {
-		_ = utils.PickCard("What card would you like to discard?", p.Hand, true /* required */)
+	for numToDiscard > 0 && p.Hand.Len() > 0 {
+		_ = utils.PickCard("What card would you like to discard?", p.Hand.Cards, true /* required */)
 
 		// get rid of the
 
