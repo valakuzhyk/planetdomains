@@ -7,7 +7,7 @@ type Player interface {
 	AddCombat(int) error
 	AddAuthority(int)
 	DrawCards(uint)
-	DiscardCard()
+	MustDiscard()
 	DestroyBase(p Player)
 	ScrapFromHand()
 	ScrapFromDiscard()

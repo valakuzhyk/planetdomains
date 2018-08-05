@@ -8,7 +8,6 @@ import (
 	"github.com/buger/goterm"
 	log "github.com/sirupsen/logrus"
 	"github.com/valakuzhyk/planetdomains/card"
-	"github.com/valakuzhyk/planetdomains/utils"
 )
 
 // TODO: If we want to handle the ability to choose what abilities activate when,
@@ -100,13 +99,4 @@ func commitTurnState(p1, p2 *person) {
 	fmt.Printf("Recovered %d authority\n", p1.turnState.AdditionalAuthority)
 	p1.AddAuthority(p1.turnState.AdditionalAuthority)
 	return
-}
-
-func (p *person) DiscardCards(numToDiscard int) {
-	for numToDiscard > 0 && p.Hand.Len() > 0 {
-		_ = utils.PickCard("What card would you like to discard?", p.Hand.Cards, true /* required */)
-
-		// get rid of the
-
-	}
 }

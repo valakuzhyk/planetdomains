@@ -51,7 +51,7 @@ type OpponentDiscards struct{ Amount uint }
 
 func (e OpponentDiscards) Activate(c card.Card, p1, p2 internal.Player) {
 	for i := uint(0); i < e.Amount; i++ {
-		p2.DiscardCard()
+		p2.MustDiscard()
 	}
 }
 func (e OpponentDiscards) String() string {

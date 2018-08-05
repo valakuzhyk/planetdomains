@@ -143,13 +143,22 @@ func (p *person) AddAuthority(authority int) {
 	p.Authority += authority
 }
 
-func (p *person) DrawCards(n uint) {
-	p.drawToHand(n)
-}
-
-func (p *person) DiscardCard() {
+func (p *person) MustDiscard(n uint) {
 	p.ToDiscard++
 }
+
+func (p *person) DiscardCards(numToDiscard int) {
+	for numToDiscard > 0 && p.Hand.Len() > 0 {
+		prompt := fmt.Sprintf("You must discard %d card(s), what would you like to discard next?", numToDiscard))
+		i := utils.PickCard(prompt, p.Hand.Cards, true /* required */)
+		if i < 0 {
+			continue
+		}
+		p.Discard.PlaceOnTop(p.Hand.Take(i))
+		numToDiscard--
+	}
+}
+
 
 func (p *person) DestroyBase(opponent internal.Player) {
 

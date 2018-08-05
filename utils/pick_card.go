@@ -11,8 +11,10 @@ import (
 
 func PickCard(question string, cards []card.Card, isRequired bool) int {
 	cardsToSelectFrom := cards
+	offset := 0
 	if isRequired {
 		cardsToSelectFrom = append([]card.Card{nil}, cards...)
+		offset = 1
 	}
 
 	templates := &promptui.SelectTemplates{
@@ -41,7 +43,7 @@ func PickCard(question string, cards []card.Card, isRequired bool) int {
 		fmt.Printf("Prompt failed %v\n", err)
 		return -1
 	}
-	return i - 1 // To correct for the insertion of "Go Back"
+	return i - offset // To correct for the insertion of "Go Back"
 }
 
 func pause() {
