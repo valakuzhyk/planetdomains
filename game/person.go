@@ -5,7 +5,6 @@ import (
 	"log"
 	"strings"
 
-	"github.com/valakuzhyk/planetdomains/cardimpl"
 	"github.com/valakuzhyk/planetdomains/internal"
 	"github.com/valakuzhyk/planetdomains/utils"
 
@@ -19,7 +18,7 @@ type person struct {
 	field     *Field
 	Authority int
 	Deck      card.Deck
-	Discard   card.Deck
+	Discard   card.Group
 	Bases     card.Group
 
 	Hand card.Group
@@ -49,7 +48,7 @@ func newPerson(name string, startingAuthority int, startingDeck card.Deck, field
 		Name:      name,
 		Authority: startingAuthority,
 		Deck:      startingDeck,
-		Discard:   cardimpl.NewDeck(),
+		Discard:   card.Group{},
 		field:     field,
 	}, nil
 }
@@ -73,10 +72,10 @@ func (p *person) String() string {
 // places the hand in the discard pile
 func (p *person) discardHandAndResolved() {
 	for p.Hand.Len() != 0 {
-		p.Discard.PlaceOnTop(p.Hand.Take(0))
+		p.Discard.Add(p.Hand.Take(0))
 	}
 	for p.PlayedCards.Len() != 0 {
-		p.Discard.PlaceOnTop(p.PlayedCards.Take(0))
+		p.Discard.Add(p.PlayedCards.Take(0))
 	}
 }
 
@@ -106,10 +105,10 @@ func (p *person) draw(n uint) []card.Card {
 		drawnCards = append(drawnCards, c)
 	}
 
-	if p.Discard.IsEmpty() {
+	if p.Discard.Len() == 0 {
 		return drawnCards
 	}
-	p.Deck.PlaceOnBottom(p.Discard.DrawAll()...)
+	p.Deck.PlaceOnBottom(p.Discard.TakeAll()...)
 	p.Deck.Shuffle()
 
 	if n < uint(len(drawnCards)) {
@@ -159,7 +158,7 @@ func (p *person) DiscardCards(numToDiscard int) {
 		if i < 0 {
 			continue
 		}
-		p.Discard.PlaceOnTop(p.Hand.Take(i))
+		p.Discard.Add(p.Hand.Take(i))
 		numToDiscard--
 	}
 }
@@ -168,12 +167,15 @@ func (p *person) DestroyBase(opponent internal.Player) {
 
 }
 
+// ScrapFromHand allows you to scrap any other card from your hand.
 func (p *person) ScrapFromHand() {
-
+	cardIdx := utils.PickCard("What card would you like to scrap from your hand?", p.Hand.Cards, true)
+	_ = p.Hand.Take(cardIdx)
 }
 
 func (p *person) ScrapFromDiscard() {
-
+	cardIdx := utils.PickCard("What card would you like to scrap from your discard pile?", p.Discard.Cards, true)
+	_ = p.Discard.Take(cardIdx)
 }
 
 func (p *person) ScrapFromTradeRow(n uint) {

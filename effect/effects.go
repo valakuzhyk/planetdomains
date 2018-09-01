@@ -91,7 +91,9 @@ type ScrapCards struct {
 func (e ScrapCards) Activate(c card.Card, p1, p2 internal.Player) {
 	switch e.Location {
 	case ScrapLocation_DISCARD:
+		p1.ScrapFromDiscard()
 	case ScrapLocation_HAND:
+		p1.ScrapFromHand()
 	case ScrapLocation_HAND_OR_DISCARD:
 	case ScrapLocation_TRADE_ROW:
 	}

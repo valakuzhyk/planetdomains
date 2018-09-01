@@ -60,7 +60,7 @@ func buyExplorer(p *person) {
 	}
 	e := explorers.Draw()
 	p.AddTrade(-e.GetCost())
-	p.Discard.PlaceOnTop(e)
+	p.Discard.Add(e)
 }
 
 func buyFromTradeRow(p *person, n int) {
@@ -87,5 +87,5 @@ func buyFromTradeRow(p *person, n int) {
 		p.field.TradeRow.Insert(n-1, p.field.TradeDeck.Draw())
 	}
 
-	p.Discard.PlaceOnTop(c)
+	p.Discard.Add(c)
 }

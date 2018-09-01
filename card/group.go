@@ -26,6 +26,12 @@ func (g *Group) Take(i int) Card {
 	return c
 }
 
+func (g *Group) TakeAll() []Card {
+	cards := g.Cards
+	g.Cards = []Card{}
+	return cards
+}
+
 // Peek at a card without taking it.
 func (g *Group) Peek(i int) Card {
 	return g.Cards[i]

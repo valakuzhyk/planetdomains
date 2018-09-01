@@ -10,6 +10,8 @@ import (
 	"github.com/valakuzhyk/planetdomains/card"
 )
 
+var godMode = true
+
 // TODO: If we want to handle the ability to choose what abilities activate when,
 // we will need some kind of registration system for the abilities (I think)
 
@@ -32,6 +34,10 @@ func (f *Field) PlayHand() {
 	for true {
 		goterm.Clear()
 		goterm.Flush()
+		if godMode {
+			p1.Trade = 99
+		}
+
 		fmt.Println(p1.field)
 
 		options := []string{endTurnOption, activateAbilitiesOption}
@@ -43,7 +49,7 @@ func (f *Field) PlayHand() {
 		}
 
 		prompt := promptui.Select{
-			Label: "Which would you like to do?:",
+			Label: "Which would you like to do?",
 			Items: options,
 			Size:  5,
 		}
