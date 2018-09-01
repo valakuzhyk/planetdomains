@@ -6,8 +6,8 @@ type Player interface {
 	AddTrade(int) error
 	AddCombat(int) error
 	AddAuthority(int)
-	DrawCards(uint)
 	MustDiscard()
+	DrawCards(uint)
 	DestroyBase(p Player)
 	ScrapFromHand()
 	ScrapFromDiscard()

@@ -7,6 +7,7 @@ import (
 
 	"github.com/valakuzhyk/planetdomains/cardimpl"
 	"github.com/valakuzhyk/planetdomains/internal"
+	"github.com/valakuzhyk/planetdomains/utils"
 
 	"github.com/valakuzhyk/planetdomains/card"
 )
@@ -79,6 +80,10 @@ func (p *person) discardHandAndResolved() {
 	}
 }
 
+func (p *person) DrawCards(n uint) {
+	p.drawToHand(n)
+}
+
 // draws cards from the deck to the hand
 func (p *person) drawToHand(n uint) {
 	p.Hand.Add(p.draw(n)...)
@@ -143,13 +148,13 @@ func (p *person) AddAuthority(authority int) {
 	p.Authority += authority
 }
 
-func (p *person) MustDiscard(n uint) {
+func (p *person) MustDiscard() {
 	p.ToDiscard++
 }
 
 func (p *person) DiscardCards(numToDiscard int) {
 	for numToDiscard > 0 && p.Hand.Len() > 0 {
-		prompt := fmt.Sprintf("You must discard %d card(s), what would you like to discard next?", numToDiscard))
+		prompt := fmt.Sprintf("You must discard %d card(s), what would you like to discard next?", numToDiscard)
 		i := utils.PickCard(prompt, p.Hand.Cards, true /* required */)
 		if i < 0 {
 			continue
@@ -158,7 +163,6 @@ func (p *person) DiscardCards(numToDiscard int) {
 		numToDiscard--
 	}
 }
-
 
 func (p *person) DestroyBase(opponent internal.Player) {
 
