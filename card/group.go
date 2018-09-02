@@ -12,7 +12,7 @@ func (g Group) String() string {
 }
 
 func (g *Group) Insert(i int, c Card) {
-	g.Cards = append(append(g.Cards[:i], c), g.Cards[i:]...)
+	g.Cards = append(g.Cards[:i], append([]Card{c}, g.Cards[i:]...)...)
 }
 
 func (g *Group) Add(c ...Card) {
