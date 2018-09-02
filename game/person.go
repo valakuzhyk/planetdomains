@@ -179,7 +179,6 @@ func (p *person) ScrapFromDiscard() {
 }
 
 func (p *person) ScrapFromTradeRow(n uint) {
-
 }
 
 func (p *person) ScrapFromHandOrDiscard(n uint) {

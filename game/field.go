@@ -21,6 +21,16 @@ type Field struct {
 	TradeDeck    card.Deck
 }
 
+// DrawFromTradeRow draws a card and attempts to take a card from
+// the trade deck to replace it.
+func (f *Field) DrawFromTradeRow(i int) card.Card {
+	card := f.TradeRow.Take(i)
+	if !f.TradeDeck.IsEmpty() {
+		f.TradeRow.Insert(i, f.TradeDeck.Draw())
+	}
+	return card
+}
+
 func (f Field) GetActivePerson() *person {
 	return f.players[f.activePlayer]
 }

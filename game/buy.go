@@ -25,7 +25,7 @@ func purchaseCards(p *person) {
 		if choice == 0 {
 			buyExplorer(p)
 		} else {
-			buyFromTradeRow(p, choice)
+			buyFromTradeRow(p, choice-1)
 		}
 		bufio.NewReader(os.Stdin).ReadBytes('\n')
 	}
@@ -63,15 +63,14 @@ func buyExplorer(p *person) {
 	p.Discard.Add(e)
 }
 
-func buyFromTradeRow(p *person, n int) {
+func buyFromTradeRow(p *person, i int) {
 	tradeRow := p.field.TradeRow
-	if n > len(tradeRow.Cards) {
-		fmt.Println("Invalid choice\n")
+	if i >= len(tradeRow.Cards) {
+		fmt.Println("Invalid choice")
 		return
 	}
 
-	// User input is 1-indexed
-	c := tradeRow.Peek(n - 1)
+	c := tradeRow.Peek(i)
 	if p.GetTrade() < c.GetCost() {
 		fmt.Printf("Cost %d greater than your trade %d. Insufficient Funds\n",
 			c.GetCost(),
@@ -79,13 +78,8 @@ func buyFromTradeRow(p *person, n int) {
 		return
 	}
 
-	c = p.field.TradeRow.Take(n - 1)
+	c = p.field.DrawFromTradeRow(i)
 	p.AddTrade(-c.GetCost())
-
-	// Replace the card on the trade row if possible
-	if !p.field.TradeDeck.IsEmpty() {
-		p.field.TradeRow.Insert(n-1, p.field.TradeDeck.Draw())
-	}
 
 	p.Discard.Add(c)
 }

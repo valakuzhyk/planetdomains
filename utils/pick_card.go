@@ -9,10 +9,12 @@ import (
 	"github.com/valakuzhyk/planetdomains/card"
 )
 
+// PickCard gives the user the ability to choose a card from a list, and
+// optionally go back.
 func PickCard(question string, cards []card.Card, isRequired bool) int {
 	cardsToSelectFrom := cards
 	offset := 0
-	if isRequired {
+	if !isRequired {
 		cardsToSelectFrom = append([]card.Card{nil}, cards...)
 		offset = 1
 	}
@@ -37,7 +39,15 @@ func PickCard(question string, cards []card.Card, isRequired bool) int {
 		Size:      7,
 	}
 
-	i, _, err := prompt.Run()
+	i := -1
+	var err error
+	if isRequired {
+		for i < 0 || err != nil {
+			i, _, err = prompt.Run()
+		}
+	} else {
+		i, _, err = prompt.Run()
+	}
 
 	if err != nil {
 		fmt.Printf("Prompt failed %v\n", err)
